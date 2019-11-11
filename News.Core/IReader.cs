@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using News.Core.Models;
 
-namespace News.Clients.Farsnews
+namespace News.Core
 {
     public interface IReader
     {
-        Task Read();
+        Task<List<ReaderResult>> Read(string url);
     }
 }

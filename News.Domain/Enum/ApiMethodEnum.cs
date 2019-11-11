@@ -1,4 +1,4 @@
-﻿namespace News.Infrastructure.Enum
+﻿namespace News.Domain.Enum
 {
     public enum ApiMethodEnum
     {

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using HtmlAgilityPack;
-using News.Clients.Farsnews.Models;
+using News.Clients.Tasnimnews.Models;
 using News.Core;
 using News.Core.Models;
 using News.Core.Services.Interfaces;
 using News.Domain.Enum;
 
-namespace News.Clients.Farsnews
+namespace News.Clients.Tasnimnews
 {
     public class Reader : IReader
     {
@@ -25,7 +23,6 @@ namespace News.Clients.Farsnews
         {
             var result = await _apiService.SendRequest<RssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
             var readerResultList = new List<ReaderResult>();
-
             foreach (var item in result.Channel.Item)
             {
                 var data = await _apiService.SendRequest<string>(ApiMethodEnum.GET, ApiSerializerEnum.None, item.Guid);
@@ -36,9 +33,10 @@ namespace News.Clients.Farsnews
                 var date = Convert.ToDateTime(item.PubDate);
                 var newsData = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'news-data')]");
                 var title = item.Title.Trim();
-                var lead = newsData.SelectSingleNode("//p[contains(@class, 'lead')]").InnerHtml.Trim();
-                var image = newsData.SelectSingleNode("//img").Attributes["src"].Value;
-                var body = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'nt-body')]");
+                var lead = item.Description.Trim();
+                var image = item.Content.Url;
+                var thumbnail = item.Thumbnail.Url;
+                var body = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'story')]");
                 foreach (var bodyChildNode in body.ChildNodes)
                 {
                     bodyChildNode.Attributes.Remove("class");
@@ -53,6 +51,7 @@ namespace News.Clients.Farsnews
                     Id = Convert.ToInt64(item.Guid.Split('/').Last()),
                     Title = title,
                     Lead = lead,
+                    Thumbnail = thumbnail,
                     Image = image,
                     Body = newBody,
                     PublishDateTime = date,

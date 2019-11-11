@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using News.Infrastructure.Enum;
+using News.Domain.Enum;
 
-namespace News.Infrastructure.Services.Interfaces
+namespace News.Core.Services.Interfaces
 {
     public interface IApiService
     {

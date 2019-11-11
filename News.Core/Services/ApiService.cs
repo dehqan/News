@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using News.Infrastructure.Enum;
-using News.Infrastructure.Services.Interfaces;
+using News.Core.Services.Interfaces;
+using News.Domain.Enum;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace News.Infrastructure.Services
+namespace News.Core.Services
 {
     public class ApiService : IApiService
     {
