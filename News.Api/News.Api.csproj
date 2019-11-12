@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\News.Clients.Farsnews\News.Clients.Farsnews.csproj" />
     <ProjectReference Include="..\News.Clients.Tasnimnews\News.Clients.Tasnimnews.csproj" />
+    <ProjectReference Include="..\News.Infrastructure\News.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

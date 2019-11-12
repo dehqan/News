@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using HtmlAgilityPack;
 using News.Clients.Farsnews.Models;
 using News.Core;
 using News.Core.Models;
+using News.Core.Models.Enum;
 using News.Core.Services.Interfaces;
-using News.Domain.Enum;
 
 namespace News.Clients.Farsnews
 {

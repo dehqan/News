@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using News.Core;
 using News.Core.Services;
 using News.Core.Services.Interfaces;
+using News.Infrastructure.EntityFramework;
 
 namespace News.Api
 {
@@ -22,6 +24,9 @@ namespace News.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<NewsDbContext>(option => option.UseSqlServer(Configuration["Database:ConnectionString"]));
 
             services.AddScoped<IReader, Clients.Farsnews.Reader>();
             services.AddScoped<IReader, Clients.Tasnimnews.Reader>();

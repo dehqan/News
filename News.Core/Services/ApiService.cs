@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using News.Core.Models.Enum;
 using News.Core.Services.Interfaces;
-using News.Domain.Enum;
 using Newtonsoft.Json;
 
 namespace News.Core.Services

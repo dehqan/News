@@ -6,8 +6,8 @@ using HtmlAgilityPack;
 using News.Clients.Tasnimnews.Models;
 using News.Core;
 using News.Core.Models;
+using News.Core.Models.Enum;
 using News.Core.Services.Interfaces;
-using News.Domain.Enum;
 
 namespace News.Clients.Tasnimnews
 {

@@ -1,4 +1,4 @@
-﻿namespace News.Domain.Enum
+﻿namespace News.Core.Models.Enum
 {
     public enum ApiMethodEnum
     {

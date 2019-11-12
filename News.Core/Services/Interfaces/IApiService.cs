@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using News.Domain.Enum;
+using News.Core.Models.Enum;
 
 namespace News.Core.Services.Interfaces
 {
