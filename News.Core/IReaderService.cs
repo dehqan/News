@@ -4,7 +4,7 @@ using News.Core.Models;
 
 namespace News.Core
 {
-    public interface IReader
+    public interface IReaderService
     {
         Task<List<ReaderResult>> Read(string url);
     }

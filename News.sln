@@ -7,13 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Api", "News.Api\News.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Business", "News.Business\News.Business.csproj", "{7EA23239-3B71-4E50-8E33-BEFE9A9CA8FA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{4D5659E1-383E-403C-B4D6-6FA3416B00FA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Clients.Farsnews", "News.Clients.Farsnews\News.Clients.Farsnews.csproj", "{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Core", "News.Core\News.Core.csproj", "{9E39FBBF-AF54-471D-9932-21E44456843D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Clients.Tasnimnews", "News.Clients.Tasnimnews\News.Clients.Tasnimnews.csproj", "{08969B60-A99D-45C1-A9A2-FBF768B6B3D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Domain", "News.Domain\News.Domain.csproj", "{249A7EFF-0CA3-43ED-B8D9-3AEA7D99AA13}"
 EndProject
@@ -33,18 +27,10 @@ Global
 		{7EA23239-3B71-4E50-8E33-BEFE9A9CA8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA23239-3B71-4E50-8E33-BEFE9A9CA8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA23239-3B71-4E50-8E33-BEFE9A9CA8FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E39FBBF-AF54-471D-9932-21E44456843D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E39FBBF-AF54-471D-9932-21E44456843D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E39FBBF-AF54-471D-9932-21E44456843D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E39FBBF-AF54-471D-9932-21E44456843D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08969B60-A99D-45C1-A9A2-FBF768B6B3D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08969B60-A99D-45C1-A9A2-FBF768B6B3D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08969B60-A99D-45C1-A9A2-FBF768B6B3D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08969B60-A99D-45C1-A9A2-FBF768B6B3D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{249A7EFF-0CA3-43ED-B8D9-3AEA7D99AA13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{249A7EFF-0CA3-43ED-B8D9-3AEA7D99AA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{249A7EFF-0CA3-43ED-B8D9-3AEA7D99AA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,10 +42,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C0136FE9-4B46-4D6D-B1C3-1ABC64970CFD} = {4D5659E1-383E-403C-B4D6-6FA3416B00FA}
-		{08969B60-A99D-45C1-A9A2-FBF768B6B3D6} = {4D5659E1-383E-403C-B4D6-6FA3416B00FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75D14EED-65DE-4220-904B-035ADF6952C7}

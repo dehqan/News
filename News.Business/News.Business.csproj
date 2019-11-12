@@ -8,4 +8,15 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\News.Core\News.Core.csproj" />
+    <ProjectReference Include="..\News.Domain\News.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.0.0\ref\netcoreapp3.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

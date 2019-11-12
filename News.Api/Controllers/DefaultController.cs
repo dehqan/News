@@ -17,9 +17,9 @@ namespace News.Api.Controllers
             {"https://www.farsnews.com/rss/world", "Farsnews" },
             {"https://www.tasnimnews.com/fa/rss/feed/0/7/3/%D9%88%D8%B1%D8%B2%D8%B4%DB%8C", "Tasnimnews" }
         };
-        private readonly IEnumerable<IReader> _readerServices;
+        private readonly IEnumerable<IReaderService> _readerServices;
 
-        public DefaultController(IEnumerable<IReader> readerServices)
+        public DefaultController(IEnumerable<IReaderService> readerServices)
         {
             _readerServices = readerServices;
         }

@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using News.Business;
+using News.Business.Clients.Services;
 using News.Core;
 using News.Core.Services;
 using News.Core.Services.Interfaces;
+using News.Domain.Contracts.Repositories;
 using News.Infrastructure.EntityFramework;
+using News.Infrastructure.EntityFramework.Repositories;
 
 namespace News.Api
 {
@@ -28,9 +32,11 @@ namespace News.Api
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<NewsDbContext>(option => option.UseSqlServer(Configuration["Database:ConnectionString"]));
 
-            services.AddScoped<IReader, Clients.Farsnews.Reader>();
-            services.AddScoped<IReader, Clients.Tasnimnews.Reader>();
+            services.AddScoped<IReaderService, FarsnewsReaderService>();
+            services.AddScoped<IReaderService, TasnimnewsReaderService>();
             services.AddScoped<IApiService, ApiService>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddHostedService<ReaderWorker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
