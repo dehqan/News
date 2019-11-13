@@ -70,7 +70,23 @@ namespace News.Business.Clients.Services
 
             return readerResultList;
         }
+        
+        public async Task<List<RssResult>> GetRssData(string url)
+        {
+            var data = await _apiService.SendRequest<FarsnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
+            return data.Channel.Item.Select(x => new RssResult
+            {
+                Guid = x.Guid.Split('/').Last(),
+                Link = x.Link,
+                Title = x.Title,
+                Description = x.Description,
+                PubDate = string.IsNullOrEmpty(x.PubDate) ? (DateTime?) null : Convert.ToDateTime(x.PubDate)
+            }).ToList();
+        }
 
-
+        public Task GetRssDetails()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
