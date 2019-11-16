@@ -4,7 +4,7 @@ namespace News.Core.Models
 {
     public class ReaderResult
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Lead { get; set; }
         public string Thumbnail { get; set; }

@@ -6,8 +6,8 @@ namespace News.Core
 {
     public interface IReaderService
     {
-        Task<List<ReaderResult>> Read(string url);
+        //Task<List<ReaderResult>> Read(string url);
         Task<List<RssResult>> GetRssData(string url);
-        Task GetRssDetails();
+        Task<List<ReaderResult>> GetRssDetails(List<RssResult> dataList);
     }
 }

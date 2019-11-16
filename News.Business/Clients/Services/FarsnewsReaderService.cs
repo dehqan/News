@@ -20,25 +20,89 @@ namespace News.Business.Clients.Services
             _apiService = apiService;
         }
 
-        public async Task<List<ReaderResult>> Read(string url)
+        //public async Task<List<ReaderResult>> Read(string url)
+        //{
+        //    var result = await _apiService.SendRequest<FarsnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
+        //    var readerResultList = new List<ReaderResult>();
+
+        //    foreach (var item in result.Channel.Item)
+        //    {
+        //        try
+        //        {
+        //            var data = await _apiService.SendRequest<string>(ApiMethodEnum.GET, ApiSerializerEnum.None, item.Guid);
+
+        //            var doc = new HtmlDocument();
+        //            doc.LoadHtml(data);
+
+        //            var date = Convert.ToDateTime(item.PubDate);
+        //            var newsData = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'news-data')]");
+        //            if (newsData == null) continue; // skip some news
+
+        //            var title = item.Title.Trim();
+        //            var lead = newsData.SelectSingleNode("//p[contains(@class, 'lead')]")?.InnerHtml?.Trim();
+        //            var image = newsData.SelectSingleNode("//img")?.Attributes["src"].Value;
+        //            var body = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'nt-body')]");
+        //            foreach (var bodyChildNode in body.ChildNodes)
+        //            {
+        //                bodyChildNode.Attributes.Remove("class");
+        //                bodyChildNode.Attributes.Remove("id");
+        //                bodyChildNode.Attributes.Remove("style");
+        //            }
+
+        //            var newBody = body.InnerHtml.RemoveUnwantedHtmlTags(new List<string> { "a" }).Trim();
+
+        //            readerResultList.Add(new ReaderResult
+        //            {
+        //                Id = Convert.ToInt64(item.Guid.Split('/').Last()),
+        //                Title = title,
+        //                Lead = lead,
+        //                Image = image,
+        //                Body = newBody,
+        //                PublishDateTime = date,
+        //                Link = item.Guid
+        //            });
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            continue;
+        //        }
+        //    }
+
+        //    return readerResultList;
+        //}
+        
+        public async Task<List<RssResult>> GetRssData(string url)
         {
-            var result = await _apiService.SendRequest<FarsnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
+            var data = await _apiService.SendRequest<FarsnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
+            return data.Channel.Item.Select(x => new RssResult
+            {
+                Guid = x.Guid,
+                Id = x.Guid.Split('/').Last(),
+                Link = x.Link,
+                Title = x.Title,
+                Description = x.Description,
+                PubDate = string.IsNullOrEmpty(x.PubDate) ? (DateTime?) null : Convert.ToDateTime(x.PubDate)
+            }).ToList();
+        }
+
+        public async Task<List<ReaderResult>> GetRssDetails(List<RssResult> dataList)
+        {
             var readerResultList = new List<ReaderResult>();
 
-            foreach (var item in result.Channel.Item)
+            foreach (var rssResult in dataList)
             {
                 try
                 {
-                    var data = await _apiService.SendRequest<string>(ApiMethodEnum.GET, ApiSerializerEnum.None, item.Guid);
+                    var data = await _apiService.SendRequest<string>(ApiMethodEnum.GET, ApiSerializerEnum.None, rssResult.Link);
 
                     var doc = new HtmlDocument();
                     doc.LoadHtml(data);
 
-                    var date = Convert.ToDateTime(item.PubDate);
+                    var date = Convert.ToDateTime(rssResult.PubDate);
                     var newsData = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'news-data')]");
                     if (newsData == null) continue; // skip some news
 
-                    var title = item.Title.Trim();
+                    var title = rssResult.Title.Trim();
                     var lead = newsData.SelectSingleNode("//p[contains(@class, 'lead')]")?.InnerHtml?.Trim();
                     var image = newsData.SelectSingleNode("//img")?.Attributes["src"].Value;
                     var body = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'nt-body')]");
@@ -53,13 +117,13 @@ namespace News.Business.Clients.Services
 
                     readerResultList.Add(new ReaderResult
                     {
-                        Id = Convert.ToInt64(item.Guid.Split('/').Last()),
+                        Id = rssResult.Id,
                         Title = title,
                         Lead = lead,
                         Image = image,
                         Body = newBody,
                         PublishDateTime = date,
-                        Link = item.Guid
+                        Link = rssResult.Link
                     });
                 }
                 catch (Exception e)
@@ -69,24 +133,6 @@ namespace News.Business.Clients.Services
             }
 
             return readerResultList;
-        }
-        
-        public async Task<List<RssResult>> GetRssData(string url)
-        {
-            var data = await _apiService.SendRequest<FarsnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
-            return data.Channel.Item.Select(x => new RssResult
-            {
-                Guid = x.Guid.Split('/').Last(),
-                Link = x.Link,
-                Title = x.Title,
-                Description = x.Description,
-                PubDate = string.IsNullOrEmpty(x.PubDate) ? (DateTime?) null : Convert.ToDateTime(x.PubDate)
-            }).ToList();
-        }
-
-        public Task GetRssDetails()
-        {
-            throw new NotImplementedException();
         }
     }
 }

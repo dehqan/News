@@ -62,7 +62,7 @@ namespace News.Business.Clients.Models.Tasnimnews
         [XmlElement(ElementName = "guid")]
         public string Guid { get; set; }
         [XmlElement(ElementName = "link")]
-        public string Link2 { get; set; }
+        public string Link { get; set; }
         [XmlElement(ElementName = "category")]
         public string Category { get; set; }
         [XmlElement(ElementName = "title")]

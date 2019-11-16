@@ -20,7 +20,7 @@ namespace News.Business.Clients.Services
             _apiService = apiService;
         }
 
-        public async Task<List<ReaderResult>> Read(string url)
+        /*public async Task<List<ReaderResult>> Read(string url)
         {
             var result = await _apiService.SendRequest<TasnimnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
             var readerResultList = new List<ReaderResult>();
@@ -68,8 +68,72 @@ namespace News.Business.Clients.Services
             }
 
             return readerResultList;
+        }*/
+
+
+        public async Task<List<RssResult>> GetRssData(string url)
+        {
+            var data = await _apiService.SendRequest<TasnimnewsRssResult>(ApiMethodEnum.GET, ApiSerializerEnum.XML, url);
+            return data.Channel.Item.Select(x => new RssResult
+            {
+                Guid = x.Guid,
+                Id = x.Guid.Split('/').Last(),
+                Link = x.Link,
+                Title = x.Title,
+                Description = x.Description,
+                PubDate = string.IsNullOrEmpty(x.PubDate) ? (DateTime?)null : Convert.ToDateTime(x.PubDate),
+                Image = x.Content.Url,
+                Thumbnail = x.Thumbnail.Url
+            }).ToList();
         }
 
+        public async Task<List<ReaderResult>> GetRssDetails(List<RssResult> dataList)
+        {
+            var readerResultList = new List<ReaderResult>();
 
+            foreach (var rssResult in dataList)
+            {
+                try
+                {
+                    var data = await _apiService.SendRequest<string>(ApiMethodEnum.GET, ApiSerializerEnum.None, rssResult.Link);
+
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(data);
+
+                    var date = Convert.ToDateTime(rssResult.PubDate);
+                    var title = rssResult.Title.Trim();
+                    var lead = rssResult.Description.Trim();
+                    var image = rssResult.Image;
+                    var thumbnail = rssResult.Thumbnail;
+                    var body = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'story')]");
+                    foreach (var bodyChildNode in body.ChildNodes)
+                    {
+                        bodyChildNode.Attributes.Remove("class");
+                        bodyChildNode.Attributes.Remove("id");
+                        bodyChildNode.Attributes.Remove("style");
+                    }
+
+                    var newBody = body.InnerHtml.RemoveUnwantedHtmlTags(new List<string> { "a" });
+
+                    readerResultList.Add(new ReaderResult
+                    {
+                        Id = rssResult.Id,
+                        Title = title,
+                        Lead = lead,
+                        Thumbnail = thumbnail,
+                        Image = image,
+                        Body = newBody,
+                        PublishDateTime = date,
+                        Link = rssResult.Link
+                    });
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+
+            return readerResultList;
+        }
     }
 }

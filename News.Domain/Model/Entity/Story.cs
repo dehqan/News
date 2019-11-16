@@ -5,6 +5,9 @@ namespace News.Domain.Model.Entity
 {
     public class Story : SupervisorEntityBase
     {
+        public string ExternalId { get; set; }
+        public Client Client { get; set; }
+        public int ClientId { get; set; }
         public string Title { get; set; }
         public string Lead { get; set; }
         public string Thumbnail { get; set; }

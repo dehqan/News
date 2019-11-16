@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using News.Business;
 using News.Business.Clients.Services;
+using News.Business.Services;
+using News.Business.Services.Interfaces;
 using News.Core;
 using News.Core.Services;
 using News.Core.Services.Interfaces;
@@ -36,7 +38,7 @@ namespace News.Api
             services.AddScoped<IReaderService, TasnimnewsReaderService>();
             services.AddScoped<IApiService, ApiService>();
             services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddHostedService<ReaderWorker>();
+            services.AddScoped<IClientService, ClientService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
