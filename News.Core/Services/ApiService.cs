@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using News.Core.Helper;
 using News.Core.Models.Enum;
 using News.Core.Services.Interfaces;
 using Newtonsoft.Json;
@@ -35,7 +36,6 @@ namespace News.Core.Services
                 streamWriter.Close();
             }
 
-
             using var response = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             await using var stream = response.GetResponseStream();
             using var reader = new StreamReader(stream ?? throw new InvalidOperationException());
@@ -46,11 +46,11 @@ namespace News.Core.Services
             switch (serializer)
             {
                 case ApiSerializerEnum.None:
-                    return (T)Convert.ChangeType(apiResult, typeof(T)); ;
+                    return (T)Convert.ChangeType(apiResult, typeof(T));
                 case ApiSerializerEnum.Json:
                     return JsonConvert.DeserializeObject<T>(apiResult);
                 case ApiSerializerEnum.XML:
-                    return new Serializer().Deserialize<T>(apiResult);
+                    return XmlConvert.DeserializeObject<T>(apiResult);
                 default:
                     throw new ArgumentOutOfRangeException();
             }

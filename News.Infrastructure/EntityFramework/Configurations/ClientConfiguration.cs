@@ -9,6 +9,8 @@ namespace News.Infrastructure.EntityFramework.Configurations
     {
         public override void Configure(EntityTypeBuilder<Client> builder)
         {
+            base.Configure(builder);
+
             builder.Property(x => x.Title).HasMaxLength(200);
 
         }

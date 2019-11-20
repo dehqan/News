@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using News.Business.Services.Interfaces;
 using News.Core;
 using News.Core.Models;
+using News.Core.Services.Interfaces;
 using News.Domain.Contracts.Repositories;
 using News.Domain.Model.Entity;
 using News.Infrastructure.EntityFramework;
@@ -17,13 +19,15 @@ namespace News.Business.Services
     {
         private readonly IEnumerable<IReaderService> _readerServices;
         private readonly IClientRepository _clientRepository;
-        private readonly NewsDbContext _context;
+        private readonly IStoryRepository _storyRepository;
+        private readonly ILogger<ClientService> _logger;
 
-        public ClientService(IEnumerable<IReaderService> readerServices, IClientRepository clientRepository, NewsDbContext context)
+        public ClientService(IEnumerable<IReaderService> readerServices, IClientRepository clientRepository, IStoryRepository storyRepository, ILogger<ClientService> logger)
         {
             _readerServices = readerServices;
             _clientRepository = clientRepository;
-            _context = context;
+            _storyRepository = storyRepository;
+            _logger = logger;
         }
 
         public async Task Read()
@@ -31,20 +35,32 @@ namespace News.Business.Services
             var clientList = await _clientRepository.GetList();
             foreach (var client in clientList)
             {
-                var readerService = _readerServices.FirstOrDefault(x => x.GetType().Name.Contains(client.Title));
+                _logger.LogInformation($"Client: {client.Title}");
+                var readerService = _readerServices.FirstOrDefault(x => x.GetType().Name.ToLower().Contains(client.Title.ToLower()));
                 if (readerService == null) continue;
 
                 foreach (var clientCategory in client.ClientCategoryCollection)
                 {
-                    var result = await readerService.GetRssData(clientCategory.Url);
+                    _logger.LogInformation($"Client: {client.Title}, ClientCategory: {clientCategory.Id}");
+
+                    List<RssResult> result;
+                    try
+                    {
+                        result = await readerService.GetRssData(clientCategory.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogWarning(e, $"ClientService.Read, Client: {client.Title}, ClientCategory: {clientCategory.Id}, Url: {clientCategory.Url}");
+                        continue;
+                    }
+
                     var getDataList = new List<RssResult>();
                     foreach (var rssResult in result)
                     {
-                        var story = await _context.Stories.FirstOrDefaultAsync(x => x.ExternalId == rssResult.Id && x.ClientId == client.Id);
+                        var story = await _storyRepository.Get(rssResult.Id, client.Id);
                         if (story != null) continue;
 
                         getDataList.Add(rssResult);
-
                     }
 
                     var dataList = await readerService.GetRssDetails(getDataList);
@@ -54,15 +70,17 @@ namespace News.Business.Services
                             Link = readerResult.Link,
                             Body = readerResult.Body,
                             ClientId = client.Id,
+                            CategoryId = clientCategory.CategoryId,
                             Image = readerResult.Image,
                             Lead = readerResult.Lead,
                             Thumbnail = readerResult.Thumbnail,
                             Title = readerResult.Title,
-                            PublishDateTime = readerResult.PublishDateTime
+                            PublishDateTime = readerResult.PublishDateTime,
+                            IsActive = true
                         }).ToList();
 
-                    await _context.AddRangeAsync(storyList);
-                    await _context.SaveChangesAsync();
+                    await _storyRepository.AddRangeAsync(storyList);
+                    await _storyRepository.SaveChangesAsync();
                 }
             }
         }

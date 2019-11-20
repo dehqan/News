@@ -9,10 +9,10 @@ namespace News.Infrastructure.EntityFramework
         public NewsDbContext(DbContextOptions<NewsDbContext> options) : base(options)
         { }
 
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<ClientCategory> ClientCategories { get; set; }
-        public DbSet<Story> Stories { get; set; }
+        public DbSet<Client> Client { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<ClientCategory> ClientCategory { get; set; }
+        public DbSet<Story> Story { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

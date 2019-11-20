@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -10,16 +11,16 @@ namespace News.Infrastructure.EntityFramework.Repositories
 {
     public class ClientRepository : IClientRepository
     {
-        private readonly NewsDbContext _dbContext;
+        private readonly NewsDbContext _context;
 
-        public ClientRepository(NewsDbContext dbContext)
+        public ClientRepository(NewsDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
         public async Task<List<Client>> GetList()
         {
-            return await _dbContext.Clients.AsNoTracking().Include(x => x.ClientCategoryCollection).ToListAsync();
+            return await _context.Client.AsNoTracking().Include(x => x.ClientCategoryCollection).Where(x => x.IsActive).ToListAsync();
         }
     }
 }

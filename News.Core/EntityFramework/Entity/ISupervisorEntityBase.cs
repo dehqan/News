@@ -7,6 +7,5 @@ namespace News.Core.EntityFramework.Entity
     public interface ISupervisorEntityBase
     {
         DateTime CreateDateTime { get; set; }
-        DateTime ModifyDateTime { get; set; }
     }
 }

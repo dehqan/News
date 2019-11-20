@@ -11,12 +11,10 @@ namespace News.Core.EntityFramework.Configurations
     {
         public override void Configure(EntityTypeBuilder<TEntity> builder)
         {
+            base.Configure(builder);
+
             builder.Property(x => x.CreateDateTime)
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-
-            builder.Property(x => x.ModifyDateTime)
-                .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("GETDATE()");
         }
     }

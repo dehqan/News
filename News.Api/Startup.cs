@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using News.Business;
-using News.Business.Clients.Services;
 using News.Business.Services;
 using News.Business.Services.Interfaces;
 using News.Core;
 using News.Core.Services;
 using News.Core.Services.Interfaces;
 using News.Domain.Contracts.Repositories;
+using News.Infrastructure.Clients.Services;
 using News.Infrastructure.EntityFramework;
 using News.Infrastructure.EntityFramework.Repositories;
 
@@ -34,10 +35,23 @@ namespace News.Api
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<NewsDbContext>(option => option.UseSqlServer(Configuration["Database:ConnectionString"]));
 
+            #region Clients
+
             services.AddScoped<IReaderService, FarsnewsReaderService>();
             services.AddScoped<IReaderService, TasnimnewsReaderService>();
-            services.AddScoped<IApiService, ApiService>();
+            services.AddScoped<IReaderService, MehrnewsReaderService>();
+            services.AddScoped<IReaderService, IsnaReaderService>();
+
+            #endregion
+
+            #region Repository
+
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IStoryRepository, StoryRepository>();
+            
+            #endregion
+
+            services.AddScoped<IApiService, ApiService>();
             services.AddScoped<IClientService, ClientService>();
         }
 
