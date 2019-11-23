@@ -41,6 +41,7 @@ namespace News.Api
             services.AddScoped<IReaderService, TasnimnewsReaderService>();
             services.AddScoped<IReaderService, MehrnewsReaderService>();
             services.AddScoped<IReaderService, IsnaReaderService>();
+            services.AddScoped<IReaderService, YjcReaderService>();
 
             #endregion
 

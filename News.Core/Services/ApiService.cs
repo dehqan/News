@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using News.Core.Helper;
 using News.Core.Models.Enum;
@@ -18,6 +19,8 @@ namespace News.Core.Services
 
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = apiMethod.ToString();
+            httpWebRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
 
             if (headers != null)
             {
